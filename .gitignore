@@ -1,0 +1,10 @@
+.*
+!.gitignore
+
+*.pyc
+*.pyo
+*$py.class
+
+.lib/
+
+set_env.bat

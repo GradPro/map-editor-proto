@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}地圖清單 - {{ super() }}{% endblock %}
+
+{% block script %}
+
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="span6 offset3">
+		<a class="btn" data-toggle="modal" href="#form_add_map" ><i class="icon-plus"></i> 新增地圖</a>
+	</div>
+</div>
+<div class="row">
+	<div class="span8 offset2">
+		<div class="span8">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>寬</th>
+            <th>高</th>
+            <th>編輯</th>
+          </tr>
+        </thead>
+        <tbody>
+{% for map in maps %}
+          <tr>
+            <td>{{ map['mid'] }}</td>
+            <td>{{ map['name'] }}</td>
+            <td>{{ map['width'] }}</td>
+            <td>{{ map['height'] }}</td>
+            <td>{{ map['mid'] }}</td>
+          </tr>
+{% endfor %}
+        </tbody>
+      </table>
+    </div>
+	</div>
+</div>
+{% endblock %}
+
+{% block body %}
+{{ super() }}
+<div class="modal" id="form_add_map">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3>新增地圖</h3>
+  </div>
+  <div class="modal-body">
+    <form class="well" action="{{ url_for('map_add') }}">
+			<div class="input-append">
+				<input type="text" placeholder="寬" class="input-small" name="w" />
+				<span class="add-on">格</span>
+			</div>
+			<div class="input-append">
+				<input type="text" placeholder="高" class="input-small" name="h" />
+				<span class="add-on">格</span>
+			</div>
+			<button type="submit" class="btn btn-primary">
+				<i class="icon-plus icon-white"></i> 新增地圖
+			</button>
+		</form>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">取消</a>
+  </div>
+</div>
+{% endblock %}

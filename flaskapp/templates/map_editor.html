@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Map Editor Prototype</title>
+<link rel="shortcut icon" href="http://google.com/favicon.ico" />
+<script src='http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js'></script>
+
+<style type='text/css'>
+canvas#map { position: fixed; z-index: 10; }
+canvas#ui { position: fixed; left: 0; top: 0; z-index: 20; }
+div.pane { position: fixed; z-index: 30;
+           background-color: rgba(0,0,0,0.6); color: white;
+           padding: 2px;
+         }
+div.pane>div.caption { cursor: default; font-size: x-large; font-weight: bold;
+                       text-align: center; margin-bottom: 4px;
+                       background-color: rgba(200,200,200,0.8); color: black; }
+div.pane>canvas.cap_mask { position: fixed; }
+</style>
+
+<script src="{{ url_for('static', filename='js/medit/main.js') }}"></script>
+<script>
+//地圖相關
+game.map = {};
+//橫向區塊格數
+game.map.width = parseInt('{{ args.width }}', 10);
+//縱向區塊格數
+game.map.height = parseInt('{{ args.height }}', 10);
+
+game.chunkList = {
+                  len: 3,
+                  src: "{{ url_for('static', filename='img/chunks.png') }}",
+                  1: {x: 0, y: 0},
+                  2: {x: 30, y: 0},
+                  3: {x: 60, y: 0},
+                  };
+
+$(function(){
+
+$('#form_file').submit(function(){
+	$('#map_data').val(JSON.stringify({width: game.map.width,
+									   height: game.map.height,
+									   grid: game.map.grid}));
+});
+
+});
+</script>
+<script src="{{ url_for('static', filename='js/medit/map.js') }}"></script>
+<script src="{{ url_for('static', filename='js/medit/ui.js') }}"></script>
+<script src="{{ url_for('static', filename='js/medit/pane.js') }}"></script>
+
+</head>
+<body>
+
+<canvas id="map"></canvas>
+<canvas id="ui"></canvas>
+<div id="debug" class="pane">
+<div class="caption">Debug</div>
+<div class="content">debug pane</div>
+</div>
+<div id="chunkList" class="pane">
+<div class="caption">地形清單</div>
+<div class="content"></div>
+</div>
+<div id="file" class="pane">
+<div class="caption">檔案</div>
+<div class="content">
+	<form id="form_file" action="{{ url_for('map_add') }}" method="POST">
+		<input type="text" name="map" id="map_data" />
+		<button id="btn_save" type="submit">存檔</button>
+		<button id="btn_cancel" type="reset">放棄</button>
+	</form>
+</div>
+</div>
+
+</body>
+</html>

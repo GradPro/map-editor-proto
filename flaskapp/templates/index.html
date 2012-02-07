@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}首頁 - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="hero-unit">
+        <h1>上古捲軸六－戰地風雲</h1>
+        <p>即將發售，敬請期待</p>
+        <p><a class="btn btn-primary btn-large">了解更多 &raquo;</a></p>
+      </div>
+<div class="row">
+        <div class="span4">
+          <h2>地圖區塊編輯器</h2>
+           <p>這是地圖區塊編輯器！</p>
+          <p><a class="btn btn-primary" href="#">進入編輯器 <i class="icon-edit"></i></a></p>
+        </div>
+        <div class="span4">
+          <h2>地圖編輯器</h2>
+           <p>這是地圖編輯器！</p>
+          <p><a class="btn btn-primary" href="{{ url_for('map_list') }}">進入編輯器 <i class="icon-edit"></i></a></p>
+       </div>
+        <div class="span4">
+          <h2>單位編輯器</h2>
+          <p>這是編輯守哲用的編輯器！</p>
+          <p><a class="btn btn-primary" href="#">進入編輯器 <i class="icon-edit"></i></a></p>
+        </div>
+      </div>
+{% endblock %}
