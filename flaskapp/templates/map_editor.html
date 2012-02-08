@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <title>Map Editor Prototype</title>
 <link rel="shortcut icon" href="http://google.com/favicon.ico" />
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
 <script src='http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js'></script>
 
 <style type='text/css'>
@@ -13,7 +17,7 @@ div.pane { position: fixed; z-index: 30;
            background-color: rgba(0,0,0,0.6); color: white;
            padding: 2px;
          }
-div.pane>div.caption { cursor: default; font-size: x-large; font-weight: bold;
+div.pane>div.caption { cursor: default; font-size: large; font-weight: bold;
                        text-align: center; margin-bottom: 4px;
                        background-color: rgba(200,200,200,0.8); color: black; }
 div.pane>canvas.cap_mask { position: fixed; }
@@ -66,13 +70,33 @@ $('#form_file').submit(function(){
 <div id="file" class="pane">
 <div class="caption">檔案</div>
 <div class="content">
-	<form id="form_file" action="{{ url_for('map_add') }}" method="POST">
-		<input type="text" name="map" id="map_data" />
-		<button id="btn_save" type="submit">存檔</button>
-		<button id="btn_cancel" type="reset">放棄</button>
-	</form>
+	<a class="btn btn-primary" data-toggle="modal" href="#form_save_map" ><i class="icon-plus"></i> 儲存地圖</a>
 </div>
 </div>
-
+<div class="modal" id="form_save_map">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3>儲存地圖</h3>
+  </div>
+  <div class="modal-body">
+    <form id="form_file" action="{{ url_for('map_add') }}" method="POST">
+    	<input type="hidden" name="map" id="map_data" />
+    	<div class="control-group">
+            <label class="control-label" for="name">地圖名稱</label>
+            <div class="controls">
+              <input name="name" id="name" type="text" >
+            </div>
+          </div>
+    	<div class="form-actions">
+    		<button class="btn btn-primary" id="btn_save" type="submit">存檔</button>
+			<button class="btn btn-danger" id="btn_cancel" type="reset">放棄</button>
+		</div>
+		</form>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">取消</a>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 </body>
 </html>
