@@ -1,4 +1,3 @@
-game.map.grid = [];
 game.map.placeChunk = 1;
 
 //滑鼠目前位置所在的區塊，-1表示不在任何一個上面
@@ -18,7 +17,7 @@ var map = game.map, chunkSize = game.chunkSize, mlayer_ctx = game.mlayer_ctx;
     var img = new Image();
     img.src = chunkList.src;
     img.onload = function(){
-        for(var x = 1; x <= chunkList.len; x++){
+        for (var x = 1; x <= chunkList.len; x++){
             var cvs = Cvs(), ctx = Ctx(cvs);
             cvs.width = cvs.height = chunkSize;
             ctx.drawImage(chunkList.img,
@@ -28,6 +27,16 @@ var map = game.map, chunkSize = game.chunkSize, mlayer_ctx = game.mlayer_ctx;
             $cList.append('<img data-terrain="'+ x +'" title="地形編號 '+x+'" '+
                           'src="'+ chunkList[x].cvs.toDataURL() +'"><br>');
         }
+
+        for (var gx = 0; gx < map.grid.length; gx++)
+        	for (var gy = 0; gy < map.grid[gx].length; gy++){
+        		if (map.grid[gx][gy] != 0){
+            		mlayer_ctx.drawImage(chunkList[map.grid[gx][gy]].cvs,
+                         				 chunkSize + gx*chunkSize,
+                         				 chunkSize + gy*chunkSize);
+                }
+        	}
+
         $cList.find('img').click(function(){ map.placeChunk = parseInt($(this).data('terrain')); });
     }
     chunkList.img = img;

@@ -34,14 +34,15 @@ game.map.height = parseInt('{{ args.height }}', 10);
 
 //初始化地圖格
 {% if grid -%}
-game.map.grid = {{ grid }}
-{% else %}
+game.map.grid = {{ grid }};
+{% else -%}
+game.map.grid = [];
 for(var x = 0; x < game.map.width; x++){
     game.map.grid[x]=[];
     for(var y = 0; y < game.map.height; y++)
         game.map.grid[x][y] = 0;
     }
-{%- endif %}
+{% endif %}
 game.chunkList = {
                   len: 3,
                   src: "{{ url_for('static', filename='img/chunks.png') }}",
@@ -89,7 +90,10 @@ $('#form_file').submit(function(){
     <h3>儲存地圖</h3>
   </div>
   <div class="modal-body">
-    <form id="form_file" action="{{ url_for('map_add') }}" method="POST">
+    <form id="form_file" action="
+{%- if args.mid %}{{ url_for('map_edit', mid=args.mid) }}
+{%- else %}{{ url_for('map_add') }}{% endif -%}
+" method="POST">
     	<input type="hidden" name="map" id="map_data" />
     	<div class="control-group">
             <label class="control-label" for="name">地圖名稱</label>
