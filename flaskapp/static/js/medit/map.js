@@ -1,13 +1,6 @@
 game.map.grid = [];
 game.map.placeChunk = 1;
 
-//初始化地圖格
-for(var x = 0; x < game.map.width; x++){
-    game.map.grid[x]=[];
-    for(var y = 0; y < game.map.height; y++)
-        game.map.grid[x][y] = 0;
-    }
-
 //滑鼠目前位置所在的區塊，-1表示不在任何一個上面
 game.map.hover = {x: -1, y: -1};
 //每個區塊的尺寸，單位px
