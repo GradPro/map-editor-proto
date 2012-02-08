@@ -32,6 +32,16 @@ game.map.width = parseInt('{{ args.width }}', 10);
 //縱向區塊格數
 game.map.height = parseInt('{{ args.height }}', 10);
 
+//初始化地圖格
+{% if grid -%}
+game.map.grid = {{ grid }}
+{% else %}
+for(var x = 0; x < game.map.width; x++){
+    game.map.grid[x]=[];
+    for(var y = 0; y < game.map.height; y++)
+        game.map.grid[x][y] = 0;
+    }
+{%- endif %}
 game.chunkList = {
                   len: 3,
                   src: "{{ url_for('static', filename='img/chunks.png') }}",
@@ -84,7 +94,7 @@ $('#form_file').submit(function(){
     	<div class="control-group">
             <label class="control-label" for="name">地圖名稱</label>
             <div class="controls">
-              <input name="name" id="name" type="text" >
+              <input name="name" id="name" type="text" value="{{ args.name }}" >
             </div>
           </div>
     	<div class="form-actions">

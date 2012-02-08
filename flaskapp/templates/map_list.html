@@ -32,7 +32,8 @@
             <td>{{ map['name'] }}</td>
             <td>{{ map['width'] }}</td>
             <td>{{ map['height'] }}</td>
-            <td>{{ map['mid'] }}</td>
+            <td><a class="btn btn-success btn-small"
+				href="{{ url_for('map_edit', mid=map['mid']) }}"><i class="icon-play icon-white"></i> 進入</a></td>
           </tr>
 {% endfor %}
         </tbody>
