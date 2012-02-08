@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import json
 from flask import render_template, request, redirect, url_for
 from main import app, sdb_con
@@ -25,7 +26,7 @@ def map_add():
         grid_part = 1 if len(grid_json) < 1000 else (len(grid_json)//1000)+1
         attrs = {
                  'mid': mid,
-                 'name': 'N/A',
+                 'name': request.form.get('name', '無標題'),
                  'width': map_data['width'],
                  'height': map_data['height'],
                  'grid_part': grid_part,
