@@ -5,6 +5,5 @@ from main import app
 import cfg
 app.config.from_object(cfg)
 
-# Control function
-import index
-
+# url routes
+import urls

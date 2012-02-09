@@ -1,15 +1,10 @@
 # -*- coding: UTF-8 -*-
 import json
 from flask import render_template, request, redirect, url_for
-from main import app, sdb_con
+from flaskapp.model.simpledb import sdb
 
-dom = sdb_con.get_domain('game-maps')
+dom = sdb.get_domain('game-maps')
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/maps/')
 def map_list():
     maps = dom.select(query="select mid, name, width, height from `game-maps`",
                       consistent_read=True)
@@ -29,7 +24,7 @@ def map_editor(mid=None):
             return redirect(url_for('map_list'))
         else:
             #取得在SDB 上item 的數量
-            domain_meta = sdb_con.domain_metadata(dom)
+            domain_meta = sdb.domain_metadata(dom)
             mid = domain_meta.item_count+1
             PK = 'map_' + str(mid)
             grid_json = json.dumps(map_data['grid'])
@@ -68,6 +63,3 @@ def map_editor(mid=None):
                     'name': 'Untitled'
                     }
             return render_template('map_editor.html', args=args)
-
-app.add_url_rule('/maps/edit/<int:mid>', 'map_edit', map_editor, methods=['GET', 'POST'])
-app.add_url_rule('/maps/add/', 'map_add', map_editor, methods=['GET', 'POST'])
