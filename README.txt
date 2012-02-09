@@ -14,10 +14,10 @@ Scripts\activate.bat
 pip install -r <project>\requirements.txt
 
 xcopy /E Lib\site-packages <project>\.lib
-// Linux: cp -r ./Lib/site-packages <project>/.lib
+// Linux: cp -r ./lib/python2.7/site-packages/ <project>/.lib
 
 Scripts\deactivate.bat
-// Linux: source ./bin/deactivate
+// Linux: 結束終端機
 
 cd <project>
 // Windows: 請確定磁碟機路徑正確
@@ -27,3 +27,4 @@ set
 // 設定環境變數 AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 
 python server.py
+// Linux: sudo su
