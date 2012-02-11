@@ -5,5 +5,8 @@ from main import app
 import cfg
 app.config.from_object(cfg)
 
-# url routes
+# 網址對應 view functions
 import urls
+
+# 樣板設定
+import tpl

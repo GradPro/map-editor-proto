@@ -1,68 +1,33 @@
-{% set site_title="網頁遊戲" -%}
 <!DOCTYPE HTML>
 <html lang="zh-TW">
 <head>
 {% block head -%}
 <meta charset="UTF-8">
-<title>{% block title %}{{ site_title }}{% endblock %}</title>
-<meta name="description" content="{% block description %}{% endblock %}" />
+<title>{% block title %}{{ site.title }}{% endblock %}</title>
+<meta name="description" content="{% block description %}{{ site.desc }}{% endblock %}" />
 
-<link rel="shortcut icon" href="http://google.com/favicon.ico" />
+{{ site.favicon }}
 {% block css_link -%}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-{% endblock %}
-{% block style %}
-{% endblock style %}
+{{ link_css('bootstrap') }}
+{{ link_css('main') }}
+{%- endblock %}
+{% block style -%}{%- endblock %}
 {% block js_link -%}
-<script src='http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js'></script>
-{% endblock %}
-{% block script %}{% endblock %}
+{{ link_ex_js('jQuery') }}
+{%- endblock %}
+{% block script -%}{%- endblock %}
 {%- endblock head %}
 </head>
 <body>
 {% block body -%}
-<div class="navbar navbar-fixed-top">
-			<div class="navbar-inner">
-				<div class="container">
-					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
-					<a class="brand" href="{{ url_for('home') }}">{{ site_title }}</a>
-					<div class="nav-collapse">
-						<ul class="nav">
-{% for i in g.sitemap -%}
-{% if i.child and not i.endpoint %}
-<li class="dropdown{% if page_name and page_name.startswith(i.name) %} active{% endif %}">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ i.title }}<b class="caret"></b></a>
-	<ul class="dropdown-menu">
-    {% for ci in i.child %}
-    <li{% if ci.name == page_name %} class="active"{% endif %}>
-        <a href="{{ url_for(ci.endpoint) }}">{{ ci.title }}</a>
-    </li>
-    {% endfor %}
-	</ul>
-</li>
-{% else %}
-<li{% if page_name and page_name.startswith(i.name) %} class="active"{% endif %}>
-    <a href="{{ url_for(i.endpoint) }}">{{ i.title }}</a>
-</li>
-{% endif %}
-{% endfor %}
-						</ul>
-					</div><!--/.nav-collapse -->
-				</div>
-			</div>
-		</div>
+{% include "inc/navbar.html" %}
 <div class="container">
 {% block content %}{% endblock %}
-<hr>
-<footer>
-        <p>&copy; Company 2012</p>
-</footer>
+{% include "inc/footer.html" %}
 </div>
-
 {%- endblock body %}
-{%- block js_bottom %}
-<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-{% endblock js_bottom %}
+{% block js_bottom -%}
+{{ link_js('bootstrap') }}
+{%- endblock js_bottom %}
 </body>
 </html>

@@ -1,0 +1,27 @@
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="{{ url_for('home') }}">{{ site.title }}</a>
+            <ul class="nav">
+{% for i in site.nav -%}
+{% if i.sub %}
+<li class="dropdown{% if request.endpoint.startswith(i.sub) %} active{% endif %}">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ i.title }}<b class="caret"></b></a>
+    <ul class="dropdown-menu">
+{%- for ci in site.sub_nav[i.sub] %}
+        <li{% if ci.endpoint == request.endpoint %} class="active"{% endif %}>
+            <a href="{{ url_for(ci.endpoint) }}">{{ ci.title }}</a>
+        </li>
+{%- endfor %}
+    </ul>
+</li>
+{%- elif i.endpoint -%}
+<li{% if i.endpoint == request.endpoint %} class="active"{% endif %}>
+    <a href="{{ url_for(i.endpoint) }}">{{ i.title }}</a>
+</li>
+{%- endif %}
+{%- endfor %}
+            </ul>
+        </div>
+    </div>
+</div>

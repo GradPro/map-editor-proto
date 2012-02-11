@@ -91,8 +91,8 @@ $('#form_file').submit(function(){
   </div>
   <div class="modal-body">
     <form id="form_file" action="
-{%- if args.mid %}{{ url_for('map_edit', mid=args.mid) }}
-{%- else %}{{ url_for('map_add') }}{% endif -%}
+{%- if args.mid %}{{ url_for('map.edit', mid=args.mid) }}
+{%- else %}{{ url_for('map.add') }}{% endif -%}
 " method="POST">
     	<input type="hidden" name="map" id="map_data" />
     	<div class="control-group">
