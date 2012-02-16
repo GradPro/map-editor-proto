@@ -13,8 +13,9 @@
 	</div>
 </div>
 <div class="row">
-	<div class="span8 offset2">
-		<div class="span8">
+    <div class="span8 offset2">
+        <div class="span8">
+{% if maps.count() %}
       <table class="table">
         <thead>
           <tr>
@@ -28,18 +29,19 @@
         <tbody>
 {% for map in maps %}
           <tr>
-            <td>{{ map['mid'] }}</td>
-            <td>{{ map['name'] }}</td>
-            <td>{{ map['width'] }}</td>
-            <td>{{ map['height'] }}</td>
+            <td>{{ map.auto_id }}</td>
+            <td>{{ map.name }}</td>
+            <td>{{ map.width }}</td>
+            <td>{{ map.height }}</td>
             <td><a class="btn btn-success btn-small"
-				href="{{ url_for('map.edit', mid=map['mid']) }}"><i class="icon-play icon-white"></i> 進入</a></td>
+				href="{{ url_for('map.edit', mid=map.auto_id) }}"><i class="icon-play icon-white"></i> 進入</a></td>
           </tr>
 {% endfor %}
         </tbody>
       </table>
+{% endif %}
+        </div>
     </div>
-	</div>
 </div>
 {% endblock %}
 

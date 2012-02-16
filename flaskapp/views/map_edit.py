@@ -1,13 +1,10 @@
 # -*- coding: UTF-8 -*-
 import json
 from flask import render_template, request, redirect, url_for
-from flaskapp.model.simpledb import sdb
-
-dom = sdb.get_domain('game-maps')
+from flaskapp.model.maps import GameMap
 
 def map_list():
-    maps = dom.select(query="select mid, name, width, height from `game-maps`",
-                      consistent_read=True)
+    maps = GameMap.all()
     return render_template('map_list.html', maps=maps)
 
 def map_editor(mid=None):
@@ -15,51 +12,27 @@ def map_editor(mid=None):
     if request.method == 'POST':
         map_data = json.loads(request.form.get('map'))
         if mid:
-            map_item = dom.get_item('map_'+str(mid), consistent_read=True)
-            map_item['name'] = request.form.get('name', 'Untitled')
-            grid_json = json.dumps(map_data['grid'])
-            for part in xrange(int(map_item['grid_part'], 10)):
-                map_item['grid_'+ str(part+1)] = grid_json[part*1000:(part+1)*1000]
-            map_item.save(replace=True)
-            return redirect(url_for('map_list'))
+            map_item = GameMap.get_by_id('map_'+str(mid))
+            map_item.name = request.form.get('name')
+            map_item.grid = json.dumps(map_data['grid'])
+            if not map_item.name: map_item.name = '無標題'
+            map_item.save()
+            return redirect(url_for('map.list'))
         else:
-            #取得在SDB 上item 的數量
-            domain_meta = sdb.domain_metadata(dom)
-            mid = domain_meta.item_count+1
-            PK = 'map_' + str(mid)
-            grid_json = json.dumps(map_data['grid'])
-            #計算grid所需的拆分後的grid_part數目
-            grid_part = 1 if len(grid_json) < 1000 else (len(grid_json)//1000)+1
-            attrs = {
-                     'mid': mid,
-                     'name': request.form.get('name', 'Untitled'),
-                     'width': map_data['width'],
-                     'height': map_data['height'],
-                     'grid_part': grid_part,
-                     }
-            #將grid 拆成 grid_1, grid_2,...
-            for part in xrange(grid_part):
-                attrs['grid_'+ str(part+1)] = grid_json[part*1000:(part+1)*1000]
-            dom.put_attributes(item_name=PK, attributes=attrs, replace=False)
-            return redirect(url_for('map_list'))
+            map_item = GameMap(name=request.form.get('name'),
+                               width=map_data['width'],
+                               height=map_data['height'],
+                               grid=json.dumps(map_data['grid']))
+            if not map_item.name: map_item.name = '無標題'
+            map_item.save()
+            return redirect(url_for('map.list'))
     #從SDB 中取得map
     else:
         if mid:
-            map_item = dom.get_item('map_'+str(mid), consistent_read=True)
-            grid_json = ''
-            for part in xrange(int(map_item['grid_part'], 10)):
-                grid_json += map_item['grid_'+str(part+1)]
-            args = {
-                    'mid': map_item['mid'],
-                    'width': map_item['width'],
-                    'height': map_item['height'],
-                    'name': map_item['name'],
-                    }
-            return render_template('map_editor.html', args=args, grid=grid_json)
+            map_item = GameMap.get_by_id('map_'+str(mid))
         else:
-            args = {
+            map_item = {
                     'width': request.args.get('w', 10, type=int),
                     'height': request.args.get('h', 10, type=int),
-                    'name': 'Untitled'
                     }
-            return render_template('map_editor.html', args=args)
+        return render_template('map_editor.html', map=map_item)

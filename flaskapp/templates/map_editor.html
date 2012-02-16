@@ -28,13 +28,13 @@ div.pane>canvas.cap_mask { position: fixed; }
 //地圖相關
 game.map = {};
 //橫向區塊格數
-game.map.width = parseInt('{{ args.width }}', 10);
+game.map.width = parseInt('{{ map.width }}', 10);
 //縱向區塊格數
-game.map.height = parseInt('{{ args.height }}', 10);
+game.map.height = parseInt('{{ map.height }}', 10);
 
 //初始化地圖格
-{% if grid -%}
-game.map.grid = {{ grid }};
+{% if map.grid -%}
+game.map.grid = {{ map.grid }};
 {% else -%}
 game.map.grid = [];
 for(var x = 0; x < game.map.width; x++){
@@ -91,14 +91,14 @@ $('#form_file').submit(function(){
   </div>
   <div class="modal-body">
     <form id="form_file" action="
-{%- if args.mid %}{{ url_for('map.edit', mid=args.mid) }}
+{%- if map.auto_id %}{{ url_for('map.edit', mid=map.auto_id) }}
 {%- else %}{{ url_for('map.add') }}{% endif -%}
 " method="POST">
     	<input type="hidden" name="map" id="map_data" />
     	<div class="control-group">
             <label class="control-label" for="name">地圖名稱</label>
             <div class="controls">
-              <input name="name" id="name" type="text" value="{{ args.name }}" >
+              <input name="name" id="name" type="text" value="{{ map.name }}" >
             </div>
           </div>
     	<div class="form-actions">
