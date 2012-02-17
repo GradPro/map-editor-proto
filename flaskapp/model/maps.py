@@ -5,6 +5,7 @@ class GameMap(AutoIdIncrementExpando):
     _db_name = 'game-maps'
     __consistent__ = True
     __AutoIdPattern__ = 'map_{incr}'
+    __AutoIdAttr__ = 'mid'
 
     name = StringProperty(required=True)
     width = IntegerProperty(default=None, required=True, min=1)

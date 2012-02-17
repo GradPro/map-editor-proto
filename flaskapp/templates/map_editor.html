@@ -54,9 +54,8 @@ game.chunkList = {
 $(function(){
 
 $('#form_file').submit(function(){
-	$('#map_data').val(JSON.stringify({width: game.map.width,
-									   height: game.map.height,
-									   grid: game.map.grid}));
+    $me = $(this);
+	$me.find('input[name="grid"]').val(JSON.stringify(game.map.grid));
 });
 
 });
@@ -91,16 +90,26 @@ $('#form_file').submit(function(){
   </div>
   <div class="modal-body">
     <form id="form_file" action="
-{%- if map.auto_id %}{{ url_for('map.edit', mid=map.auto_id) }}
+{%- if map.mid %}{{ url_for('map.edit', mid=map.mid) }}
 {%- else %}{{ url_for('map.add') }}{% endif -%}
 " method="POST">
-    	<input type="hidden" name="map" id="map_data" />
+        <input type="hidden" name="grid" />
     	<div class="control-group">
             <label class="control-label" for="name">地圖名稱</label>
             <div class="controls">
               <input name="name" id="name" type="text" value="{{ map.name }}" >
             </div>
-          </div>
+        </div>
+        <div class="input-append">
+            <label class="control-label" for="width">寬</label>
+            <input type="text" class="input-small" name="width" value="{{ map.width }}" readonly="readonly" />
+            <span class="add-on">格</span>
+        </div>
+        <div class="input-append">
+            <label class="control-label" for="height">高</label>
+            <input type="text" class="input-small" name="height" value="{{ map.height }}" readonly="readonly" />
+            <span class="add-on">格</span>
+        </div>
     	<div class="form-actions">
     		<button class="btn btn-primary" id="btn_save" type="submit"><i class="icon-ok icon-white"></i> 存檔</button>
 			<button class="btn btn-danger" id="btn_cancel" type="reset"><i class="icon-remove icon-white"></i> 放棄</button>

@@ -10,14 +10,19 @@ config.setbool('DB', 'enable_ssl', True)
 
 class AutoIdIncrementModel(Model):
     __AutoIdPattern__ = '{incr}'
+    __AutoIdAttr__ = ''
     auto_id = IntegerProperty(default=None, required=True, unique=True, min=1)
 
     def _query_auto_id(self):
+        max_item = None
         for item in self._manager.domain.select(
                 'select auto_id from `%s` where auto_id is not null order by auto_id desc' %
                 self._db_name, consistent_read=True, max_items=1):
             max_item = item
-        return int(max_item['auto_id']) -2147483648 +1
+        if max_item:
+            return int(max_item['auto_id']) -2147483648 +1
+        else:
+            return 1
 
     def put(self, expected_value=None):
         if not self.auto_id:
@@ -35,17 +40,28 @@ class AutoIdIncrementModel(Model):
             self.id = self.__class__.__AutoIdPattern__.format(incr=self.auto_id)
         return Model.put_attributes(self, attrs)
 
+    def __getattr__(self, name):
+        if name == self.__AutoIdAttr__:
+            return self.auto_id
+        return Model.__getattr__(self, name)
+
+
 class AutoIdIncrementExpando(Expando):
     __AutoIdPattern__ = '{incr}'
+    __AutoIdAttr__ = ''
     auto_id = IntegerProperty(default=None, required=True, unique=True, min=1)
     _cache = {}
 
     def _query_auto_id(self):
+        max_item = None
         for item in self._manager.domain.select(
                 'select auto_id from `%s` where auto_id is not null order by auto_id desc' %
                 self._db_name, consistent_read=True, max_items=1):
             max_item = item
-        return int(max_item['auto_id']) -2147483648 +1
+        if max_item:
+            return int(max_item['auto_id']) -2147483648 +1
+        else:
+            return 1
 
     def put(self, expected_value=None):
         try:
@@ -68,6 +84,11 @@ class AutoIdIncrementExpando(Expando):
         if not self.id:
             self.id = self.__class__.__AutoIdPattern__.format(incr=self.auto_id)
         return Expando.put_attributes(self, attrs)
+
+    def __getattr__(self, name):
+        if name == self.__AutoIdAttr__:
+            return self.auto_id
+        return Expando.__getattr__(self, name)
 
     def __setattr__(self, name, value):
         if not (name in self._prop_names or name.startswith('_') or name == 'id'):
