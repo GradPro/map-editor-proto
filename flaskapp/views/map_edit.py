@@ -3,7 +3,7 @@ from flask import render_template, request, redirect, url_for
 from flaskapp.model.maps import GameMap
 
 def map_list():
-    maps = GameMap.all()
+    maps = GameMap.query(GameMap.all(), attrs=['mid', 'name', 'width', 'height'], consistent=True)
     return render_template('map_list.html', maps=maps)
 
 def map_editor(mid=None):
@@ -13,7 +13,7 @@ def map_editor(mid=None):
         if not name: name = '無標題'
         grid = request.form.get('grid')
         if mid:
-            map_item = GameMap.get_by_id('map_'+str(mid))
+            map_item = GameMap.get_by_auto_id(mid)
             map_item.name = name
             map_item.grid = grid
             map_item.save()
@@ -28,7 +28,7 @@ def map_editor(mid=None):
     #從SDB 中取得map
     else:
         if mid:
-            map_item = GameMap.get_by_id('map_'+str(mid))
+            map_item = GameMap.get_by_auto_id(mid)
         else:
             map_item = {
                         'width': request.args.get('w', 10, type=int),
