@@ -38,6 +38,7 @@ site['sub_nav'] = sub_nav
 
 @app.context_processor
 def inject_template_vars():
+# 把site變數插入為預設樣板變數
     return dict(site=site)
 
 css_libs = {
@@ -46,6 +47,10 @@ css_libs = {
             }
 
 def link_css(lib_name):
+# http://jinja.pocoo.org/docs/api/#jinja2.Markup
+# 一般在樣板引擎中，任何字串都會被跳脫成非html字元，例如 < > 這幾種字元會被轉換掉
+# 是為了安全性考量，避免被插入惡意代碼，但如果是 Markup 就會照原樣輸出
+# http://flask.pocoo.org/docs/api/#flask.url_for
     return Markup('<link rel="stylesheet" href="%s">' % \
                   url_for('static', filename=css_libs[lib_name]))
 

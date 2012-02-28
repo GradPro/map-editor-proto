@@ -2,6 +2,8 @@
 from main import app
 from views import index, map_edit
 
+# http://flask.pocoo.org/docs/api/#flask.Flask.add_url_rule
+
 # 首頁
 app.add_url_rule('/', 'home', index.home)
 

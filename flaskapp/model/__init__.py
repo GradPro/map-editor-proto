@@ -2,6 +2,7 @@ from ConfigParser import DuplicateSectionError
 from boto import config
 from flaskapp import app
 
+# 給boto設定要連線sdb的帳密和啟用加密連線
 try:
     config.add_section('DB')
 except DuplicateSectionError:
