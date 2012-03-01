@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from ConfigParser import DuplicateSectionError
 from boto import config
 from flaskapp import app

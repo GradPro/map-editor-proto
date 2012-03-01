@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from boto.sdb.db.property import StringProperty, IntegerProperty
 from sdb_orm.model import Model
 from sdb_orm.property import AutoIDProperty, BlobProperty

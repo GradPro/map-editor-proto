@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import os
 
 # 如果環境變數中有e就回傳e的值，不然就回傳d
