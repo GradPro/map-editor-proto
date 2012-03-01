@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 from main import app
-from views import index, map_edit
+from views import index, map_edit, api
 
 # http://flask.pocoo.org/docs/api/#flask.Flask.add_url_rule
 
@@ -13,3 +13,6 @@ app.add_url_rule('/maps/list', 'map.list', map_edit.map_list)
 app.add_url_rule('/maps/add', 'map.add', map_edit.map_editor, methods=['GET', 'POST'])
 # 編輯地圖
 app.add_url_rule('/maps/edit/<int:mid>', 'map.edit', map_edit.map_editor, methods=['GET', 'POST'])
+
+app.add_url_rule('/api/maps', 'api.maps', api.maps, methods=['GET', 'POST'])
+app.add_url_rule('/api/map/<int:mid>', 'api.map', api.maps, methods=['GET', 'PUT', 'DELETE'])
