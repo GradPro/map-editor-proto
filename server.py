@@ -1,4 +1,7 @@
 # -*- coding: UTF-8 -*-
+import gevent.monkey
+# 安裝gevent到標準函式庫
+gevent.monkey.patch_all()
 from wsgi import app
 
 def main():

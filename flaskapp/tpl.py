@@ -68,6 +68,13 @@ def link_js(lib_name):
     return Markup('<script src="%s"></script>' % \
                   url_for('static', filename=js_libs[lib_name]))
 
+def link_page_js(name):
+    return Markup('<script src="%s"></script>' % \
+                  url_for('static', filename='js/%s.js' % name))
+
 @app.context_processor
 def register_template_functions():
-    return dict(link_css=link_css, link_js=link_js, link_ex_js=link_ex_js)
+    return dict(link_css=link_css,
+                link_js=link_js,
+                link_ex_js=link_ex_js,
+                link_page_js=link_page_js)

@@ -12,12 +12,12 @@ def maps(mid=None):
                 map_item.name = name
                 map_item.grid = request.form.get('grid')
                 map_item.save()
-                return jsonify(map=map_item.to_dict()['GameMap'])
+                resp = jsonify(map=map_item.to_dict()['GameMap'])
             elif request.method == 'DELETE':
                 map_item.delete()
-                return jsonify(map={'id': map_item.id})
+                resp = jsonify(map={'id': map_item.id})
             else:
-                return jsonify(map=map_item.to_dict()['GameMap'])
+                resp = jsonify(map=map_item.to_dict()['GameMap'])
         else:
             abort(404)
     else:
@@ -31,8 +31,10 @@ def maps(mid=None):
                                grid=request.form.get('grid')
                                )
             map_item.save()
-            return jsonify(map=map_item.to_dict()['GameMap'])
+            resp = jsonify(map=map_item.to_dict()['GameMap'])
         else:
             all_map = GameMap.query(GameMap.all(), attrs=['mid', 'name', 'width', 'height'], consistent=True)
             all_map = [m.to_dict()['GameMap'] for m in all_map]
-            return jsonify(maps=all_map)
+            resp = jsonify(maps=all_map)
+    resp.headers.extend({'Cache-Control': 'no-cache', 'Pragma': 'no-cache'})
+    return resp

@@ -3,9 +3,7 @@ from flask import render_template, request, redirect, url_for
 from flaskapp.model.maps import GameMap
 
 def map_list():
-    # 查詢所有的資料，只select指定的欄位，而且使用一致性讀取
-    maps = GameMap.query(GameMap.all(), attrs=['mid', 'name', 'width', 'height'], consistent=True)
-    return render_template('map_list.html', maps=maps)
+    return render_template('map_list.html')
 
 def map_editor(mid=None):
     # 將地圖存於sdb，因為連線是POST，瀏覽器上傳資料

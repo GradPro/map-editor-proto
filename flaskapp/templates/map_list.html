@@ -2,42 +2,33 @@
 
 {% block title %}地圖清單 - {{ super() }}{% endblock %}
 
-{% block script %}
-
-{% endblock %}
-
 {% block content %}
 <div class="row">
-	<div class="span6 offset3">
-		<a class="btn" data-toggle="modal" href="#form_add_map" ><i class="icon-plus"></i> 新增地圖</a>
-	</div>
+    <div class="span8 offset2">
+        <a class="btn" data-toggle="modal" href="#form_add_map"><i
+        class="icon-plus"></i> 新增地圖</a>
+    </div>
 </div>
 <div class="row">
     <div class="span8 offset2">
         <div class="span8">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>寬</th>
-            <th>高</th>
-            <th>編輯</th>
-          </tr>
-        </thead>
-        <tbody>
-{% for map in maps %}
-          <tr>
-            <td>{{ map.mid }}</td>
-            <td>{{ map.name }}</td>
-            <td>{{ map.width }}</td>
-            <td>{{ map.height }}</td>
-            <td><a class="btn btn-success btn-small"
-				href="{{ url_for('map.edit', mid=map.mid) }}"><i class="icon-play icon-white"></i> 進入</a></td>
-          </tr>
-{% endfor %}
-        </tbody>
-      </table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>編號</th>
+                        <th>名稱</th>
+                        <th>寬</th>
+                        <th>高</th>
+                        <th>編輯</th>
+                    </tr>
+                </thead>
+                <tbody id="map_list">
+                    <tr>
+                        <td colspan="5"><i class="icon-refresh"></i> 地圖清單載入中 </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -70,3 +61,11 @@
   </div>
 </div>
 {% endblock %}
+
+{% block js_bottom -%}
+{{ super() }}
+<script>
+edit_map_url = "{{ url_for('map.edit', mid=0) }}";
+</script>
+{{ link_page_js(request.endpoint) }}
+{%- endblock js_bottom %}
